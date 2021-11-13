@@ -7,10 +7,10 @@ public class MapLocation
     public int x;
     public int z;
 
-    public MapLocation(int _x, int _z)
+    public MapLocation(int x, int z)
     {
-        x = _x;
-        z = _z;
+        this.x = x;
+        this.z = z;
     }
 
     public Vector2 ToVector()
