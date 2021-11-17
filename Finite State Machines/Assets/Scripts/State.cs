@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class State : MonoBehaviour
+public class State
 {
     public enum STATE
     {
-        IDLE, PATROL, PURSUE, ATTACK, SLEEP
+        IDLE, PATROL, PURSUE, ATTACK, SLEEP, SCARED
     };
     public enum EVENT
     {
@@ -23,6 +23,8 @@ public class State : MonoBehaviour
     private float _visDistance = 10.0f;
     private float _visAngle = 30.0f;
     private float _shootDist = 7.0f;
+    private float _creptDist = 2.0f;
+    private float _creptAngle = 30.0f;
     public STATE Name { get { return _name; } }
     public State(GameObject npc, NavMeshAgent agent, Animator anim, Transform player)
     {
@@ -57,5 +59,29 @@ public class State : MonoBehaviour
             return _nextState;
         }
         return this;
+    }
+
+    public bool CanSeePlayer()
+    {
+        Vector3 direction = _player.position - _npc.transform.position;
+        float angle = Vector3.Angle(direction, _npc.transform.forward);
+        if (direction.magnitude < _visDistance && angle < _visAngle)
+            return true;
+        return false;
+    }
+    public bool CanAttackPlayer()
+    {
+        Vector3 direction = _player.position - _npc.transform.position;
+        if (direction.magnitude < _shootDist)
+            return true;
+        return false;
+    }
+    public bool IsCreptBehind()
+    {
+        Vector3 direction = _player.position - _npc.transform.position;
+        float angle = Vector3.Angle(direction, -_npc.transform.forward);
+        if (direction.magnitude <= _creptDist && angle <= _creptAngle)
+            return true;
+        return false;
     }
 }

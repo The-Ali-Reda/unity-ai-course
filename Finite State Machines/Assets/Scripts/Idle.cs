@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,12 +24,15 @@ public class Idle : State
 
     public override void Update()
     {
+        if (CanSeePlayer())
+        {
+            _nextState = new Pursue(_npc, _agent, _anim, _player);
+            _stage = EVENT.EXIT;
+        }
         if(Random.Range(0,100)<10)
         {
             _nextState = new Patrol(_npc, _agent, _anim, _player);
             _stage = EVENT.EXIT;
         }
-        else
-            base.Update();
     }
 }
