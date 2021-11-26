@@ -5,40 +5,50 @@ using UnityEngine.AI;
 
 public abstract class GAction : MonoBehaviour
 {
-    [SerializeField]
-    private string _actionName = "Action";
-    [SerializeField]
-    private float _cost = 1f;
-    [SerializeField]
-    private GameObject _target;
-    [SerializeField]
-    private GameObject _targetTag;
-    [SerializeField]
-    private float _duaration = 0f;
+    [field:SerializeField]
+    public string ActionName { get; private set; } = "Action";
+    [field:SerializeField]
+    public float Cost { get; private set; } = 1f;
+    [field:SerializeField]
+    public GameObject Target { get; private set; }
+    [field:SerializeField]
+    public string TargetTag { get; private set; }
+    [field:SerializeField]
+    public float Duration { get; private set; } = 0f;
     [SerializeField]
     private WorldState[] _preConditions;
     [SerializeField]
     private WorldState[] _postEffects;
-    [SerializeField]
-    private NavMeshAgent _agent;
+    [field:SerializeField]
+    public NavMeshAgent Agent { get; private set; }
     [SerializeField]
     private Dictionary<string, int> _preconditions;
-    [SerializeField]
-    private Dictionary<string, int> _posteffects;
+    [field:SerializeField]
+    public Dictionary<string, int> Posteffects { get; private set; }
     [SerializeField]
     private WorldStates _agentBeliefs;
-    [SerializeField]
-    private bool running;
+    [field:SerializeField]
+    public bool Running { get; private set; }
 
     public GAction()
     {
         _preconditions = new Dictionary<string, int>();
-        _posteffects = new Dictionary<string, int>();
+        Posteffects = new Dictionary<string, int>();
     }
 
+    public void Run()
+    {
+        Running = true;
+        Agent.SetDestination(Target.transform.position);
+    }
+
+    public void SetTarget(GameObject target)
+    {
+        Target = target;
+    }
     private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
+        Agent = GetComponent<NavMeshAgent>();
         if (_preConditions != null)
         {
             foreach (var preCondition in _preConditions)
@@ -50,7 +60,7 @@ public abstract class GAction : MonoBehaviour
         {
             foreach (var postEffect in _postEffects)
             {
-                _posteffects.Add(postEffect.key, postEffect.value);
+                Posteffects.Add(postEffect.key, postEffect.value);
             }
         }
     }
@@ -68,6 +78,12 @@ public abstract class GAction : MonoBehaviour
                 return false;
         }
         return true;
+    }
+
+    public void Complete()
+    {
+        Running = false;
+        PostPerform();
     }
     public abstract bool PrePerform();
     public abstract bool PostPerform();
