@@ -96,6 +96,8 @@ GameObject:
   - component: {fileID: 7983342047032721574}
   - component: {fileID: 7983342047032721569}
   - component: {fileID: 7259352927933981980}
+  - component: {fileID: 1156591528}
+  - component: {fileID: 1156591529}
   m_Layer: 0
   m_Name: Patient
   m_TagString: Untagged
@@ -128,7 +130,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
+  m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -153,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Actions>k__BackingField: []
+  Name: 
 --- !u!114 &7983342047032721575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +172,7 @@ MonoBehaviour:
   <Cost>k__BackingField: 1
   <Target>k__BackingField: {fileID: 0}
   <TargetTag>k__BackingField: Door
-  <Duration>k__BackingField: 2
+  <Duration>k__BackingField: 0
   _preConditions: []
   _postEffects:
   - key: hasArrived
@@ -217,7 +220,7 @@ MonoBehaviour:
   <Cost>k__BackingField: 1
   <Target>k__BackingField: {fileID: 0}
   <TargetTag>k__BackingField: Reception
-  <Duration>k__BackingField: 5
+  <Duration>k__BackingField: 0
   _preConditions:
   - key: hasArrived
     value: 1
@@ -239,6 +242,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisAgent: {fileID: 7983342047032721572}
+--- !u!114 &1156591528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264387040887698079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3423f5c719b8db40a5e76728342b77a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ActionName>k__BackingField: Get Treated
+  <Cost>k__BackingField: 1
+  <Target>k__BackingField: {fileID: 0}
+  <TargetTag>k__BackingField: 
+  <Duration>k__BackingField: 5
+  _preConditions:
+  - key: atHospital
+    value: 1
+  _postEffects:
+  - key: isTreated
+    value: 1
+  <Agent>k__BackingField: {fileID: 0}
+  <Running>k__BackingField: 0
+--- !u!114 &1156591529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264387040887698079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19636f4cf5186c8459fae4720243b096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ActionName>k__BackingField: Go Home
+  <Cost>k__BackingField: 1
+  <Target>k__BackingField: {fileID: 0}
+  <TargetTag>k__BackingField: Home
+  <Duration>k__BackingField: 0
+  _preConditions:
+  - key: isCured
+    value: 1
+  _postEffects:
+  - key: isHome
+    value: 1
+  <Agent>k__BackingField: {fileID: 0}
+  <Running>k__BackingField: 0
 --- !u!1 &638233511881571744
 GameObject:
   m_ObjectHideFlags: 0

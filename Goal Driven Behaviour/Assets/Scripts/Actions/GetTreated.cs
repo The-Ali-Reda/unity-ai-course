@@ -7,8 +7,8 @@ public class GetTreated : GAction
 
     public override bool PostPerform()
     {
-        GWorld.Instance.GetWorld().ModifyState("isTreated", 1);
         Inventory.DeleteItem(Target);
+        _agentBeliefs.ModifyState("isCured", 1);
         return true;
     }
 
