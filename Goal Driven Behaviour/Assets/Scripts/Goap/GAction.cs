@@ -10,7 +10,7 @@ public abstract class GAction : MonoBehaviour
     [field:SerializeField]
     public float Cost { get; private set; } = 1f;
     [field:SerializeField]
-    public GameObject Target { get; private set; }
+    public GameObject Target { get; protected set; }
     [field:SerializeField]
     public string TargetTag { get; private set; }
     [field:SerializeField]
@@ -21,19 +21,21 @@ public abstract class GAction : MonoBehaviour
     private WorldState[] _postEffects;
     [field:SerializeField]
     public NavMeshAgent Agent { get; private set; }
-    [SerializeField]
-    private Dictionary<string, int> _preconditions;
+    [field:SerializeField]
+    public Dictionary<string, int> Preconditions { get; private set; }
     [field:SerializeField]
     public Dictionary<string, int> Posteffects { get; private set; }
     [SerializeField]
-    private WorldStates _agentBeliefs;
+    protected WorldStates _agentBeliefs;
     [field:SerializeField]
     public bool Running { get; private set; }
 
+    public GInventory Inventory { get; private set; }
     public GAction()
     {
-        _preconditions = new Dictionary<string, int>();
+        Preconditions = new Dictionary<string, int>();
         Posteffects = new Dictionary<string, int>();
+
     }
 
     public void Run()
@@ -53,7 +55,7 @@ public abstract class GAction : MonoBehaviour
         {
             foreach (var preCondition in _preConditions)
             {
-                _preconditions.Add(preCondition.key, preCondition.value);
+                Preconditions.Add(preCondition.key, preCondition.value);
             }
         }
         if (_postEffects != null)
@@ -63,6 +65,8 @@ public abstract class GAction : MonoBehaviour
                 Posteffects.Add(postEffect.key, postEffect.value);
             }
         }
+        Inventory = GetComponent<GAgent>().Inventory;
+        _agentBeliefs = GetComponent<GAgent>().AgentBeliefs;
     }
 
     public bool IsAchievable()
@@ -72,7 +76,7 @@ public abstract class GAction : MonoBehaviour
 
     public bool IsAchievableGiven(Dictionary<string, int> conditions)
     {
-        foreach(var condition in _preconditions)
+        foreach(var condition in Preconditions)
         {
             if (!conditions.ContainsKey(condition.Key))
                 return false;

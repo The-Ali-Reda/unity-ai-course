@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoToWaitingRoom : GAction
+public class GoToCubicle : GAction
 {
 
     public override bool PostPerform()
     {
-        GWorld.Instance.GetWorld().ModifyState("patientWaiting", 1);
-        GWorld.Instance.AddPatient(gameObject);
-        _agentBeliefs.ModifyState("atHospital", 1);
         return true;
     }
 
     public override bool PrePerform()
     {
+        Target = GWorld.Instance.RemoveCubicle();
+        if (Target == null)
+            return false;
         return true;
     }
 }

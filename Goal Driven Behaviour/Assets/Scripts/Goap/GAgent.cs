@@ -26,6 +26,10 @@ public class GAgent : MonoBehaviour
     public GAction CurrentAction { get; private set; }
     private SubGoal _currentGoal;
     private bool invoked = false;
+    public GInventory Inventory { get; protected set; } = new GInventory ();
+    
+    public WorldStates AgentBeliefs { get; private set; } = new WorldStates();
+    public string Name;
     public void Init()
     {
         GAction[] acts = this.GetComponents<GAction> ();
@@ -62,7 +66,7 @@ public class GAgent : MonoBehaviour
             var sortedGoals = SubGoals.OrderByDescending(g=> g.Value);
             foreach(KeyValuePair<SubGoal, int> pair in sortedGoals)
             {
-                ActionsQueue = Planner.Plan(Actions, pair.Key.SubGoals, null);
+                ActionsQueue = Planner.Plan(Actions, pair.Key.SubGoals, AgentBeliefs);
                 if (ActionsQueue != null)
                 {
                     _currentGoal = pair.Key;
